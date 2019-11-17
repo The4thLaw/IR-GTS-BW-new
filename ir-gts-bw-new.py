@@ -59,7 +59,6 @@ def offlinemenu():
         else:
             print 'Invalid option, please try again.'
             continue
-        clear()
         print 'Returning to menu...\n'
 
 def onlinemenu():
@@ -95,7 +94,6 @@ def onlinemenu():
         else:
             print 'Invalid option, try again'
             continue
-        clear()
         print 'Returning to main menu...'
 
 def convertmenu():
@@ -127,7 +125,6 @@ def convertmenu():
         else:
             print 'Invalid option, try again'
             continue
-        clear()
         print 'Returning to conversion menu...'
 
 def sendmenu():
@@ -163,7 +160,6 @@ def sendmenu():
         else:
             print 'Invalid option, try again'
             continue
-        clear()
         print 'Returning to send menu...'
 
 
