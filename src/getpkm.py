@@ -17,7 +17,8 @@ from sys import argv, exit
 from base64 import urlsafe_b64decode, urlsafe_b64encode
 from array import array
 from .stats import statread
-import os.path, subprocess, platform, hashlib, gtsvar
+from . import gtsvar
+import os.path, subprocess, platform, hashlib
 
 def makepkm(bytes):
     ar = array('B') # Byte array to hold encrypted data

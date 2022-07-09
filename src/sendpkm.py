@@ -12,7 +12,8 @@ from sys import argv, exit
 from platform import system
 from base64 import urlsafe_b64encode
 from os import listdir
-import os.path, gtsvar, hashlib
+from . import gtsvar
+import os.path, hashlib
 
 
 def sendpkm():
