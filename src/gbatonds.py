@@ -22,7 +22,7 @@ def makends(gba):
 
     otname = convertname(gba[20:27])
 
-    species = ord(gba[32]) + (ord(gba[33]) << 8)
+    species = gba[32] + (gba[33] << 8)
     species = pokemonindex.get(species)
 
     gend = genderbyte(species, pid)
@@ -98,11 +98,9 @@ def makends(gba):
     return makeparty(pkm)
 
 def convertname(n):
-    bytes = array('B')
-    bytes.fromstring(n)
     converted = ''
 
-    for val in bytes:
+    for val in n:
         if val == 0xff:
             break
         c = name.get(val)
@@ -131,7 +129,7 @@ def ivbytes(ivs, name):
     return ivs[0:3] + chr(mod)
 
 def genderbyte(species, pid):
-    gid = ord(pid[0])
+    gid = pid[0]
     genratio = gender.get(species)
     if genratio == 'Genderless': return 4
     elif genratio == '0 %': return 2

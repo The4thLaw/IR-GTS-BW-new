@@ -379,20 +379,18 @@ tsu = {
 }
 
 def namegen(namebytes):
-    arr = array('B')
-    arr.fromstring(namebytes)
     name = ''
     skip = False
-    for i in range(0, len(arr), 2):
-        if arr[i] == 0xff:
+    for i in range(0, len(namebytes), 2):
+        if namebytes[i] == 0xff:
             return name
 
-        if arr[i + 1] == 0x00:  # Handling JPN names
+        if namebytes[i + 1] == 0x00:  # Handling JPN names
             if skip:
                 skip = False
                 continue
 
-            c = arr[i]
+            c = namebytes[i]
             n = ''
             hiragana = False
 
@@ -402,73 +400,73 @@ def namegen(namebytes):
 
             # handling special cases (small ya, yu, yo, tsu)
             if c == 0x5e:
-                n = ki.get(arr[i + 2])
+                n = ki.get(namebytes[i + 2])
                 if n:
                     skip = True
                 else:
                     n = 'KI'
             elif c == 0x5f:
-                n = gi.get(arr[i + 2])
+                n = gi.get(namebytes[i + 2])
                 if n:
                     skip = True
                 else:
                     n = 'GI'
             elif c == 0x68:
-                n = shi.get(arr[i + 2])
+                n = shi.get(namebytes[i + 2])
                 if n:
                     skip = True
                 else:
                     n = 'SHI'
             elif c == 0x69:
-                n = ji.get(arr[i + 2])
+                n = ji.get(namebytes[i + 2])
                 if n:
                     skip = True
                 else:
                     n = 'JI'
             elif c == 0x72:
-                n = chi.get(arr[i + 2])
+                n = chi.get(namebytes[i + 2])
                 if n:
                     skip = True
                 else:
                     n = 'CHI'
             elif c == 0x7c:
-                n = ni.get(arr[i + 2])
+                n = ni.get(namebytes[i + 2])
                 if n:
                     skip = True
                 else:
                     n = 'NI'
             elif c == 0x83:
-                n = hi.get(arr[i + 2])
+                n = hi.get(namebytes[i + 2])
                 if n:
                     skip = True
                 else:
                     n = 'HI'
             elif c == 0x84:
-                n = bi.get(arr[i + 2])
+                n = bi.get(namebytes[i + 2])
                 if n:
                     skip = True
                 else:
                     n = 'BI'
             elif c == 0x85:
-                n = pi.get(arr[i + 2])
+                n = pi.get(namebytes[i + 2])
                 if n:
                     skip = True
                 else:
                     n = 'PI'
             elif c == 0x90:
-                n = mi.get(arr[i + 2])
+                n = mi.get(namebytes[i + 2])
                 if n:
                     skip = True
                 else:
                     n = 'MI'
             elif c == 0x9b:
-                n = ri.get(arr[i + 2])
+                n = ri.get(namebytes[i + 2])
                 if n:
                     skip = True
                 else:
                     n = 'RI'
             elif c == 0x74:
-                dbl = arr[i + 2]
+                dbl = namebytes[i + 2]
                 if dbl < 0x52:
                     dbl += 0x50
                 n = tsu.get(dbl)
@@ -483,10 +481,10 @@ def namegen(namebytes):
                 n = n.lower()
 
             name += n
-        # endif arr[i + 1] == 0x00
+        # endif namebytes[i + 1] == 0x00
         else:  # Non-JPN names
             try:
-                name += namelist.get(arr[i])
+                name += namelist.get(namebytes[i])
             except:
                 pass
     return name
