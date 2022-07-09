@@ -11,10 +11,7 @@ from datetime import datetime
 import os, struct, sys
 
 def statread(pkm, path):
-    p = array('B')
-    p.fromstring(pkm)
-
-    s = statsetup(p, pkm, path)
+    s = statsetup(pkm, path)
     s += '\n'
     s += '=' * 80 + '\n\n'
 
@@ -54,10 +51,8 @@ def statana():
         print('Pokemon is in PC format; adding party information now... ', end=' ')
         pkm = makeparty(pkm)
         print('Done.')
-    p = array('B')
-    p.fromstring(pkm)
     
-    s = statsetup(p, pkm, path)
+    s = statsetup(pkm, path)
 
     print('\nBeginning analysis:\n')
     print(s)
@@ -147,10 +142,10 @@ def statana():
 
     print('\n')
 
-def statsetup(p, pkm, path):
-    pid = p[0x00] + (p[0x01] << 8) + (p[0x02] << 16) + (p[0x03] << 24)
+def statsetup(pkm, path):
+    pid = pkm[0x00] + (pkm[0x01] << 8) + (pkm[0x02] << 16) + (pkm[0x03] << 24)
     nickname = ''
-    if p[0x49] != 0:
+    if pkm[0x49] != 0:
         nickname = 'Invalid nickname'
     else:
         for i in pkm[0x48:0x5e]:
@@ -158,8 +153,8 @@ def statsetup(p, pkm, path):
             if i != '\x00': nickname += i
     lv = p[0x8c]
     nat = natget(ord(pkm[0x41]))
-    spec = specget((p[0x09] << 8) + p[0x08])
-    dwabil = '(hidden/DW ability) ' if p[0x42] == 1 else ''
+    spec = specget((pkm[0x09] << 8) + pkm[0x08])
+    dwabil = '(hidden/DW ability) ' if pkm[0x42] == 1 else ''
     abil = abiget(p[0x15])
     if p[0x40] & 4:
         gender = '(Genderless)'
@@ -174,20 +169,20 @@ def statsetup(p, pkm, path):
         for i in pkm[0x68:0x78]:
             if i == '\xff': break
             if i != '\x00': otname += i
-    otid = (p[0x0d] << 8) + p[0x0c]
-    secid = (p[0x0f] << 8) + p[0x0e]
-    held = heldget((p[0x0b] << 8) + p[0x0a])
-    ivs = ivcheck(p[0x38:0x3c])
-    evs = evcheck(p[0x18:0x1e])
-    atk = attackcheck(p[0x28:0x30])
+    otid = (pkm[0x0d] << 8) + pkm[0x0c]
+    secid = (pkm[0x0f] << 8) + pkm[0x0e]
+    held = heldget((pkm[0x0b] << 8) + pkm[0x0a])
+    ivs = ivcheck(pkm[0x38:0x3c])
+    evs = evcheck(pkm[0x18:0x1e])
+    atk = attackcheck(pkm[0x28:0x30])
     hidden = hiddenpower(ivs)
-    happy = p[0x14]
+    happy = pkm[0x14]
     shiny = shinycheck(pid, otid, secid)
     if shiny:
         shiny = 'SHINY'
     else:
         shiny = ''
-    origin = gorget(p[0x5f])
+    origin = gorget(pkm[0x5f])
     timetaken = str(datetime.now())[:-7]
 
     s = '"%s" (%s from %s)\n    ' % (nickname, timetaken, path)
