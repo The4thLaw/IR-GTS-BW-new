@@ -1,6 +1,12 @@
-import socket, sys, time, thread
+from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import chr
+from builtins import object
+import socket, sys, time, _thread
 
-class Request:
+class Request(object):
   def __init__(self, h=None):
     if not h:
       self.action=None
@@ -15,14 +21,14 @@ class Request:
     vars=dict((i[:i.find("=")],i[i.find("=")+1:]) for i in request[request.find("?")+1:].split("&"))
     self.getvars=vars
   def __str__(self):
-    request="%s?%s"%(self.page, '&'.join("%s=%s"%i for i in self.getvars.items()))
+    request="%s?%s"%(self.page, '&'.join("%s=%s"%i for i in list(self.getvars.items())))
     return 'GET /syachi2ds/web/%s HTTP/1.1\r\n'%request+ \
     'Host: gamestats2.gs.nintendowifi.net\r\nUser-Agent: GameSpyHTTP/1.0\r\n'+ \
     'Connection: close\r\n\r\n'
   def __repr__(self):
-    return "<Request for %s, with %s>"%(self.action, ", ".join(i+"="+j for i, j in self.getvars.items()))
+    return "<Request for %s, with %s>"%(self.action, ", ".join(i+"="+j for i, j in list(self.getvars.items())))
 
-class Response:
+class Response(object):
   pokes=None
   resps=None
   def __init__(self, h):
@@ -69,7 +75,7 @@ class Response:
 def dnsspoof():
   s=socket.socket(); s.connect(("178.62.43.212", 53));
   me="".join(chr(int(x)) for x in s.getsockname()[0].split("."))
-  print "Please set your DS's DNS server to",s.getsockname()[0]
+  print("Please set your DS's DNS server to",s.getsockname()[0])
   dnsserv=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
   dnsserv.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
   dnsserv.bind(("0.0.0.0",53))
@@ -86,7 +92,7 @@ serv=None
 log=None
 def initServ(logfile=None):
   global serv, log
-  thread.start_new_thread(dnsspoof,())
+  _thread.start_new_thread(dnsspoof,())
   serv=socket.socket()
   serv.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
   serv.bind(("0.0.0.0",80))

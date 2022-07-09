@@ -3,6 +3,7 @@
 # Generates the filename based on the nickname given to the Pokemon. This file
 # is now a giant mess because of the Japanese handling, but it does work.
 
+from builtins import range
 from array import array
 
 namelist = {

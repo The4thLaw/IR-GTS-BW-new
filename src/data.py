@@ -1,3 +1,6 @@
+from __future__ import division
+from builtins import range
+from past.utils import old_div
 species = {
     1: 'Bulbasaur',
     2: 'Ivysaur',
@@ -2096,8 +2099,8 @@ def hiddenpower(ivs):
         if m == 2 or m == 3:
             p += 2 ** i
 
-    t = int((t * 15) / 63)
-    p = int((p * 40) / 63) + 30
+    t = int(old_div((t * 15), 63))
+    p = int(old_div((p * 40), 63)) + 30
     return (hptype.get(t), p)
 
 def specget(s):
