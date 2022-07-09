@@ -8,6 +8,7 @@ from .boxtoparty import makeparty, ivcheck, evcheck
 from .data import *
 from platform import system
 from datetime import datetime
+from time import sleep
 import os, struct, sys
 
 def statread(pkm, path):
@@ -19,6 +20,7 @@ def statread(pkm, path):
     with open('statlog.txt', 'a') as f:
         f.write(s)
     print('Done.')
+    sleep(1)
 
 def statana():
     while True:
