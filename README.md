@@ -9,3 +9,7 @@ This is a resurrection/modification of the Infinite Recursion GTS project (link:
 ## Server functions have been restored
 
 GTS functions have been fixed to work post Nintendo server shutdown by using 3rd party GTS servers, allowing it to work for the forseeable future.
+
+## Python 3 compatibility
+
+This version is compatible with Python 3 (WIP!). Support for Python 2.7 has been dropped.
